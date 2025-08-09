@@ -1,0 +1,6 @@
+{
+    "totvsLanguageServer.welcomePage": false,
+    "totvsLanguageServer.askEncodingChange": true,
+    "CodeGPT.apiKey": "Anthropic",
+    "totvsLanguageServer.editor.linter.includes": "C:\\TOTVS\\22-06-06-P12_INCLUDES"
+}

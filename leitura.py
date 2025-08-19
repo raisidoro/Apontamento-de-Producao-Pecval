@@ -21,8 +21,10 @@ def leitura():
     target = f"C:\\Users\\{usuario}\\Desktop\\REPORT_Master__FUNCIONAL.xlsx"
 
     shutil.copyfile(original, target)
+    wb_modelo = xl.load_workbook(filename1, data_only=True)
+    ws_modeloPec = wb_modelo['REPORT']
     cont = 2
-    i = 2
+
     while resposta == 'SIM':
         with wx.FileDialog(None, "Open XYZ file", wildcard="Excel Files (*.xlsm;*.xlsx)|*.xlsm;*.xlsx", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
             if fileDialog.ShowModal() == wx.ID_CANCEL:
@@ -40,16 +42,17 @@ def leitura():
         wb_reporte = xl.load_workbook(pathname, data_only=True)
         ws_reporte = wb_reporte['REPORT']
 
-        wb_modelo = xl.load_workbook(filename1, data_only=True)
-        ws_modeloPec = wb_modelo['REPORT']
+    #    wb_modelo = xl.load_workbook(filename1, data_only=True)
+     #   ws_modeloPec = wb_modelo['REPORT']
 
         maxcol  = ws_reporte.max_column
         maxrow  = ws_reporte.max_row
-
+        i =2
         col_reporte = [ws_reporte.cell(row=1, column=j).value for j in range(1, maxcol+1)]
         col_modelo  = [ws_modeloPec.cell(row=11, column=j).value for j in range(1, maxcol+1)]
 
         #cont = 2
+        
         skip_columns = []
         for idx, col_name in enumerate(col_reporte, start=1):
             if col_name in ["QTD REPINTURA", "QTD RETRABALHO", "QTD SCRAP", "QTD REVISÃO"]:
@@ -67,9 +70,8 @@ def leitura():
                     if v is None or v == "":
                         if 7 <= j <= 33 or j == 5:
                             v = ""
-                    ws_modeloPec.cell(row=i, column=j).value = v
-            cont += 1
-            i =cont
+                    ws_modeloPec.cell(row=cont, column=j).value = v
+            cont = cont + 1
 
         wb_modelo.save(filename1)
 

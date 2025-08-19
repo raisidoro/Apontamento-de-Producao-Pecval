@@ -62,6 +62,7 @@ def leitura():
             # Só copia se tem dados relevantes
             val1 = ws_reporte.cell(row=i, column=1).value
             val2 = ws_reporte.cell(row=i, column=2).value
+            
             if val1 is not None and val2 not in (None, ""):
                 for j in range(1, maxcol+1):
                     if j in skip_columns:
@@ -70,9 +71,14 @@ def leitura():
                     if v is None or v == "":
                         if 7 <= j <= 33 or j == 5:
                             v = ""
+                         
+                    # # coluna "DATA DO DIA"
+                    # if ("DATA" or "DATA DO DIA") in col_reporte and isinstance(v, datetime.datetime):
+                    #     v = v.date()  
+                    #     ws_modeloPec.cell(row=cont, column=j).number_format = "DD/MM/YYYY"
+
                     ws_modeloPec.cell(row=cont, column=j).value = v
             cont = cont + 1
-
         wb_modelo.save(filename1)
 
         dlg = wx.SingleChoiceDialog(None, ("Deseja continuar?"), "CONTINUAR", final)

@@ -8,7 +8,7 @@ import leitura
 
 # -*- coding: utf-8 -*-
 class Main (wx.Frame):
-        def __init__(self, title="Apontamentos"):
+        def __init__(self, title="REPORT"):
             wx.Frame.__init__(self, None, title=title)
 
             panel = wx.Panel(self)
@@ -42,15 +42,7 @@ class Main (wx.Frame):
 
 
                 
-            
-        
-        
-
-
-
 if __name__ == "__main__":
    ex = wx.App()
    Main()
    ex.MainLoop()
-
-

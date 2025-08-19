@@ -16,12 +16,13 @@ final=['SIM','NAO']
 def leitura():
     usuario = gt.getuser()
     resposta = 'SIM'
-    filename1 = f"C:\\Users\\{usuario}\\Desktop\\ModeloPecval.xlsx"
-    original = r'\\files-gdbr01\\GDBR\\ADMINISTRATION\\IT\\Desenvolvimento\\Apontamentos de producao - Programas\\Um-a-Um_Homologado\\modelo\\modeloPecval.xlsx'
-    target = f"C:\\Users\\{usuario}\\Desktop\\Modelo.xlsx"
+    filename1 = f"C:\\Users\\{usuario}\\Desktop\\REPORT_Master__FUNCIONAL.xlsx"
+    original = r'\\files-gdbr01\\GDBR\\ADMINISTRATION\\IT\\Desenvolvimento\\Apontamentos de producao - Programas\\Um-a-Um_Homologado\\modelo\\REPORT_Master__FUNCIONAL.xlsx'
+    target = f"C:\\Users\\{usuario}\\Desktop\\REPORT_Master__FUNCIONAL.xlsx"
 
     shutil.copyfile(original, target)
-
+    cont = 2
+    i = 2
     while resposta == 'SIM':
         with wx.FileDialog(None, "Open XYZ file", wildcard="Excel Files (*.xlsm;*.xlsx)|*.xlsm;*.xlsx", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
             if fileDialog.ShowModal() == wx.ID_CANCEL:
@@ -40,7 +41,7 @@ def leitura():
         ws_reporte = wb_reporte['REPORT']
 
         wb_modelo = xl.load_workbook(filename1, data_only=True)
-        ws_modeloPec = wb_modelo['Apontamentos']
+        ws_modeloPec = wb_modelo['REPORT']
 
         maxcol  = ws_reporte.max_column
         maxrow  = ws_reporte.max_row
@@ -48,21 +49,27 @@ def leitura():
         col_reporte = [ws_reporte.cell(row=1, column=j).value for j in range(1, maxcol+1)]
         col_modelo  = [ws_modeloPec.cell(row=11, column=j).value for j in range(1, maxcol+1)]
 
-        cont = 12
-        for i in range(12, maxrow+1):
+        #cont = 2
+        skip_columns = []
+        for idx, col_name in enumerate(col_reporte, start=1):
+            if col_name in ["QTD REPINTURA", "QTD RETRABALHO", "QTD SCRAP", "QTD REVISÃO"]:
+                skip_columns.append(idx)
+
+        for i in range(i, maxrow+1):
             # Só copia se tem dados relevantes
             val1 = ws_reporte.cell(row=i, column=1).value
             val2 = ws_reporte.cell(row=i, column=2).value
             if val1 is not None and val2 not in (None, ""):
                 for j in range(1, maxcol+1):
+                    if j in skip_columns:
+                        continue
                     v = ws_reporte.cell(row=i, column=j).value
                     if v is None or v == "":
                         if 7 <= j <= 33 or j == 5:
-                            v = 0
-                    ws_modeloPec.cell(row=cont, column=j).value = v
-                if maxcol >= 93:
-                    ws_modeloPec.cell(row=cont, column=93).value = setor
-                cont += 1
+                            v = ""
+                    ws_modeloPec.cell(row=i, column=j).value = v
+            cont += 1
+            i =cont
 
         wb_modelo.save(filename1)
 

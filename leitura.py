@@ -15,12 +15,12 @@ def leitura():
     usuario   = gt.getuser()
     continuar = 'SIM'
     gerada    = f"C:\\Users\\{usuario}\\Desktop\\REV00 Planilha de apontamento - Pintura.xlsx"
-    original  = r'\\files-gdbr01\\GDBR\\ADMINISTRATION\\IT\\Desenvolvimento\\Apontamentos de producao - Programas\\Um-a-Um_Homologado\\modelo\\REV00 Planilha de apontamento - Pintura.xlsx'
+    original  = r'\\files-gdbr01\\GDBR\\ADMINISTRATION\\IT\\Desenvolvimento\\Apontamentos de producao - Programas\\Um-a-Um_Homologado\\modelo\\REPORT_Master__FUNCIONAL.xlsx'
     target    = gerada
 
     shutil.copyfile(original, target)
     wb_modelo    = xl.load_workbook(gerada, data_only=True)
-    ws_modeloPec = wb_modelo['Apontamentos']
+    ws_modeloPec = wb_modelo['REPORT']
 
     cont = 12
     while continuar == 'SIM':

@@ -28,6 +28,7 @@ class Main (wx.Frame):
             self.SetTitle('PECVAL')
             self.SetSize((200,170))
             self.Centre()
+            meutexto.Centre(wx.HORIZONTAL)
             self.Show(True)
             # self.btnOP.Bind(wx.EVT_BUTTON, self.OnClicked) 
 
@@ -39,6 +40,7 @@ class Main (wx.Frame):
         def eventBtnAP(self, event): 
                 leitura.leitura()
                 wx.MessageBox('Tudo Pronto!', 'Info', wx.OK | wx.ICON_INFORMATION)
+
                 
 if __name__ == "__main__":
    ex = wx.App()

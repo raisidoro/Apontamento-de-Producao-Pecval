@@ -7,6 +7,7 @@ import getpass as gt
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 from openpyxl.cell.cell import MergedCell
+import re
 
 setores = ['IE-INJECAO', 'IE-PINTURA', 'IE-MONTAGEM']
 opcoes  = ['SIM', 'NAO']
@@ -34,6 +35,18 @@ def leitura():
     dlg = wx.TextEntryDialog(None, 'Informe o dia: XX/XX/XXXX','Dialog')  
     if dlg.ShowModal() == wx.ID_OK:
         data = str(dlg.GetValue())
+        
+        if re.match(r'^\d{2}/\d{2}/\d{4}$', data):
+            try:
+                datetime.datetime.strptime(data, "%d/%m/%Y")
+            
+            except ValueError:
+                wx.MessageBox("Data inválida! Use o formato DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
+        else:
+                wx.MessageBox("Formato de data inválido! Use DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
+    else:
+        dlg.Destroy()
+        return
     dlg.Destroy()
     
 

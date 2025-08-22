@@ -14,7 +14,7 @@ opcoes  = ['SIM', 'NAO']
 def leitura():
     usuario   = gt.getuser()
     continuar = 'SIM'
-    gerada    = f"C:\\Users\\{usuario}\\Desktop\\REV00 Planilha de apontamento - Pintura.xlsx"
+    gerada    = f"C:\\Users\\{usuario}\\Desktop\\testando pelo amor de deus.xlsx"
     original  = r'\\files-gdbr01\\GDBR\\ADMINISTRATION\\IT\\Desenvolvimento\\Apontamentos de producao - Programas\\Um-a-Um_Homologado\\modelo\\REPORT_Master__FUNCIONAL.xlsx'
     target    = gerada
 
@@ -22,7 +22,21 @@ def leitura():
     wb_modelo    = xl.load_workbook(gerada, data_only=True)
     ws_modeloPec = wb_modelo['REPORT']
 
-    cont = 12
+    cont = 2
+    item = []
+    total = []
+    maquina = []
+    ng = []
+    usuario = []
+    borra = []
+    indice = 0
+    
+    dlg = wx.TextEntryDialog(None, 'Informe o dia: XX/XX/XXXX','Dialog')  
+    if dlg.ShowModal() == wx.ID_OK:
+        data = str(dlg.GetValue())
+    dlg.Destroy()
+    
+
     while continuar == 'SIM':
 
         with wx.FileDialog(None, "Selecione arquivos Excel", wildcard="Excel Files (*.xlsm;*.xlsx)|*.xlsm;*.xlsx", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE) as fileDialog:
@@ -54,25 +68,33 @@ def leitura():
             # i --> linha
             # j --> coluna
             for i in range(12, maxrow+1):
-                val1 = ws_reporte.cell(row=i, column=1).value #Coluna1
                 val2 = ws_reporte.cell(row=i, column=2).value #Coluna2
 
                 # Verifica se as colunas 1 e 2 possuem valores
-                if val1 is not None and val2 not in (None, ""):
-                    # Processa as colunas restantes se tiver valor nas colunas 1 e 2
+                if val2 is not None and val2 not in (None, ""):
+
+                    # Obtém o valor da célula
+                    item.append(ws_reporte.cell(row=i, column=3).value)
+                    total.append(ws_reporte.cell(row=i, column=7).value)
+                    maquina.append(ws_reporte.cell(row=i, column=6).value)
+                    ng.append(ws_reporte.cell(row=i, column=65).value)
+                    usuario.append(ws_reporte.cell(row=i, column=2).value)
+                    borra.append(ws_reporte.cell(row=i, column=68).value)
+
                     for j in range(1, maxcol+1):
 
-                        # Obtém o valor da célula
-                        valor_celula = ws_reporte.cell(row=i, column=j).value
-        
-                        #if valor_celula is None or valor_celula == "":
-                            #if 7 <= j <= 33 or j == 5:
-                                #valor_celula = ""
                         if not isinstance(ws_modeloPec.cell(row=cont, column=j), MergedCell):
-                            print(valor_celula)
-                            ws_modeloPec.cell(row=cont, column=j).value = valor_celula
+                            ws_modeloPec.cell(row=cont, column=2).value = item[indice]
+                            ws_modeloPec.cell(row=cont, column=3).value = total[indice]
+                            ws_modeloPec.cell(row=cont, column=23).value = maquina[indice]
+                            ws_modeloPec.cell(row=cont, column=4).value = ng[indice]
+                            ws_modeloPec.cell(row=cont, column=21).value = usuario[indice]
+                            ws_modeloPec.cell(row=cont, column=22).value = data
+                            ws_modeloPec.cell(row=cont, column=20).value = borra[indice]
+                            ws_modeloPec.cell(row=cont, column=25).value = setor
                             ws_modeloPec.cell(row=cont, column=j).alignment = Alignment(horizontal='center')
-
+                            
+                    indice += 1
                     cont += 1
 
         for col in ws_modeloPec.columns:

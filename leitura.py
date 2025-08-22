@@ -97,7 +97,7 @@ def leitura():
                     for j in range(1, maxcol+1):
 
                         if not isinstance(ws_modeloPec.cell(row=cont, column=j), MergedCell):
-                            ws_modeloPec.cell(row=cont, column=2).value = item[indice]
+                            ws_modeloPec.cell(row=cont, column=1).value = item[indice]
                             ws_modeloPec.cell(row=cont, column=3).value = total[indice]
                             ws_modeloPec.cell(row=cont, column=23).value = maquina[indice]
                             ws_modeloPec.cell(row=cont, column=4).value = ng[indice]

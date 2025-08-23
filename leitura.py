@@ -15,12 +15,12 @@ opcoes  = ['SIM', 'NAO']
 def leitura():
     usuario   = gt.getuser()
     continuar = 'SIM'
-    gerada    = f"C:\\Users\\{usuario}\\Desktop\\testando pelo amor de deus.xlsx"
+    gerada    = f"C:\\Users\\{usuario}\\Desktop\\REPORT_MASTER.xlsx"
     original  = r'\\files-gdbr01\\GDBR\\ADMINISTRATION\\IT\\Desenvolvimento\\Apontamentos de producao - Programas\\Um-a-Um_Homologado\\modelo\\REPORT_Master__FUNCIONAL.xlsx'
     target    = gerada
 
     shutil.copyfile(original, target)
-    wb_modelo    = xl.load_workbook(gerada, data_only=True)
+    wb_modelo    = xl.load_workbook(gerada, data_only=False)
     ws_modeloPec = wb_modelo['REPORT']
 
     cont = 2
@@ -81,10 +81,10 @@ def leitura():
             # i --> linha
             # j --> coluna
             for i in range(12, maxrow+1):
-                val2 = ws_reporte.cell(row=i, column=2).value #Coluna2
+                val3 = ws_reporte.cell(row=i, column=3).value #Coluna3
 
                 # Verifica se as colunas 1 e 2 possuem valores
-                if val2 is not None and val2 not in (None, ""):
+                if val3 is not None and val3 not in (None, ""):
 
                     # Obtém o valor da célula
                     item.append(ws_reporte.cell(row=i, column=3).value)
@@ -92,7 +92,10 @@ def leitura():
                     maquina.append(ws_reporte.cell(row=i, column=6).value)
                     ng.append(ws_reporte.cell(row=i, column=65).value)
                     usuario.append(ws_reporte.cell(row=i, column=2).value)
-                    borra.append(ws_reporte.cell(row=i, column=68).value)
+                    borra_val = ws_reporte.cell(row=i, column=68).value
+                    if borra_val is None or borra_val == "":
+                        borra_val = 0
+                    borra.append(borra_val)
 
                     for j in range(1, maxcol+1):
 
@@ -109,10 +112,6 @@ def leitura():
                             
                     indice += 1
                     cont += 1
-
-        for col in ws_modeloPec.columns:
-            max_length = max(len(str(cell.value)) if cell.value else 0 for cell in col)
-            ws_modeloPec.column_dimensions[get_column_letter(col[0].column)].width = max_length + 2
 
         wb_modelo.save(gerada)
 

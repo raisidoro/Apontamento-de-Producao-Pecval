@@ -36,18 +36,21 @@ def leitura():
     if dlg.ShowModal() == wx.ID_OK:
         data = str(dlg.GetValue())
         
-        if re.match(r'^\d{2}/\d{2}/\d{4}$', data):
-            try:
-                datetime.datetime.strptime(data, "%d/%m/%Y")
-            
-            except ValueError:
-                wx.MessageBox("Data inválida! Use o formato DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
-        else:
-                wx.MessageBox("Formato de data inválido! Use DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
-    else:
+        while True:
+            if dlg.ShowModal() == wx.ID_OK:
+                data = str(dlg.GetValue())
+                if re.match(r'^\d{2}/\d{2}/\d{4}$', data):
+                    try:
+                        datetime.datetime.strptime(data, "%d/%m/%Y")
+                        break  
+                    except ValueError:
+                        wx.MessageBox("Data inválida! Use o formato DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
+                else:
+                    wx.MessageBox("Formato de data inválido! Use DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
+            else:
+                dlg.Destroy()
+                return
         dlg.Destroy()
-        return
-    dlg.Destroy()
     
 
     while continuar == 'SIM':

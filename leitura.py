@@ -23,15 +23,17 @@ def leitura():
     wb_modelo    = xl.load_workbook(gerada, data_only=False)
     ws_modeloPec = wb_modelo['REPORT']
 
-    cont = 2
-    item = []
-    total = []
-    maquina = []
-    ng = []
-    usuario = []
-    borra = []
-    indice = 0
-    
+    cont          = 2
+    item          = []
+    total         = []
+    maquina       = []
+    ng            = []
+    usuario       = []
+    borra         = []
+    kanbanModelo  = []
+    partNumber    = []
+    indice        = 0
+
     dlg = wx.TextEntryDialog(None, 'Informe o dia: XX/XX/XXXX','Dialog')  
     if dlg.ShowModal() == wx.ID_OK:
         data = str(dlg.GetValue())
@@ -76,6 +78,18 @@ def leitura():
             print(f"\nProcessando: {pathname}")
 
             wb_reporte = xl.load_workbook(pathname, data_only=True)
+            ws_reporte = wb_reporte['Cadastro']
+
+            maxrow = ws_reporte.max_row
+    
+            for i in range (3, maxrow+1):
+                if ws_reporte.cell(row=i, column=3).value is not None and  ws_reporte.cell(row=i, column=4).value is not None:
+                    kanban = ws_reporte.cell(row=i, column=3).value #Pega valores da coluna C da aba cadastro (Valor do Kanban)
+                    kanbanModelo.append(kanban)
+
+                    pn = ws_reporte.cell(row=i, column=4).value #Pega valores da coluna D da aba cadastro (Part Number)
+                    partNumber.append(pn)
+
             ws_reporte = wb_reporte['Apontamentos']
 
             maxcol = ws_reporte.max_column
@@ -91,6 +105,8 @@ def leitura():
 
                     # Obtém o valor da célula
                     item.append(ws_reporte.cell(row=i, column=3).value)
+                    if item[indice] in kanbanModelo:
+                        ws_modeloPec.cell(row=cont, column=2).value = partNumber[indice]
                     total.append(ws_reporte.cell(row=i, column=7).value)
                     maquina.append(ws_reporte.cell(row=i, column=6).value)
                     ng.append(ws_reporte.cell(row=i, column=65).value)
@@ -99,6 +115,8 @@ def leitura():
                     if borra_val is None or borra_val == "":
                         borra_val = 0
                     borra.append(borra_val)
+
+                # 
 
                     for j in range(1, maxcol+1):
 
@@ -123,3 +141,5 @@ def leitura():
         if dlg.ShowModal() == wx.ID_OK:
             continuar = dlg.GetStringSelection()
         dlg.Destroy()
+
+

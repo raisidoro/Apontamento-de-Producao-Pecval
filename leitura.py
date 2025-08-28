@@ -106,7 +106,9 @@ def leitura():
                     # Obtém o valor da célula
                     item.append(ws_reporte.cell(row=i, column=3).value)
                     if item[indice] in kanbanModelo:
-                        ws_modeloPec.cell(row=cont, column=2).value = partNumber[indice]
+                        idx = kanbanModelo.index(item[indice])
+                        ws_modeloPec.cell(row=cont, column=2).value = partNumber[idx]
+
                     total.append(ws_reporte.cell(row=i, column=7).value)
                     maquina.append(ws_reporte.cell(row=i, column=6).value)
                     ng.append(ws_reporte.cell(row=i, column=65).value)

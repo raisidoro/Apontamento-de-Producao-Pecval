@@ -15,7 +15,7 @@ class Main (wx.Frame):
             
             meutexto = wx.StaticText(self, label=u"PECVAL", pos=(45, 30))
             meutexto.SetForegroundColour("white")
-    
+                      
             # # btnOP = wx.Button(self, label= 'OP', pos=(0,50))
             # btnPerda = wx.Button(self, label = 'PERDA', pos=(240,50))
 

@@ -11,6 +11,7 @@ import re
 
 setores = ['IE-INJECAO', 'IE-PINTURA', 'IE-MONTAGEM']
 opcoes  = ['SIM', 'NAO']
+abas  = ['Aba 1', 'Aba 2', 'Aba 3', 'Aba 4']
 
 def leitura():
     usuario   = gt.getuser()
@@ -53,8 +54,14 @@ def leitura():
                 dlg.Destroy()
                 return
         dlg.Destroy()
-    
 
+    dlg = wx.SingleChoiceDialog(None, 'Escolha a Aba desejada', 'Dialog', abas)
+    if dlg.ShowModal() == wx.ID_OK:
+        aba = dlg.GetStringSelection()
+    else:
+        dlg.Destroy()
+        return aba
+   
     while continuar == 'SIM':
 
         with wx.FileDialog(None, "Selecione arquivos Excel", wildcard="Excel Files (*.xlsm;*.xlsx)|*.xlsm;*.xlsx", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE) as fileDialog:
@@ -90,7 +97,7 @@ def leitura():
                     pn = ws_reporte.cell(row=i, column=4).value #Pega valores da coluna D da aba cadastro (Part Number)
                     partNumber.append(pn)
 
-            ws_reporte = wb_reporte['Apontamentos']
+            ws_reporte = wb_reporte[aba]
 
             maxcol = ws_reporte.max_column
             maxrow = ws_reporte.max_row
@@ -131,6 +138,7 @@ def leitura():
                             ws_modeloPec.cell(row=cont, column=22).value = data
                             ws_modeloPec.cell(row=cont, column=20).value = borra[indice]
                             ws_modeloPec.cell(row=cont, column=25).value = setor
+                            ws_modeloPec.cell(row=cont, column=26).value = aba
                             ws_modeloPec.cell(row=cont, column=j).alignment = Alignment(horizontal='center')
                             
                     indice += 1

@@ -9,9 +9,9 @@ from openpyxl.utils import get_column_letter
 from openpyxl.cell.cell import MergedCell
 import re
 
-setores = ['IE-INJECAO', 'IE-PINTURA', 'IE-MONTAGEM']
+setores = ['PRODUÇÃO F1', 'PRODUÇÃO F2', 'PINTURA', 'MONTAGEM E CQ F2-1', 'MONTAGEM E CQ F2-2', 'SERVICE PARTS']
 opcoes  = ['SIM', 'NAO']
-abas  = ['Aba 1', 'Aba 2', 'Aba 3', 'Aba 4']
+abas  = ['Aba 1 - 07h15 as 12h00', 'Aba 2 - 14h00 as 17h15', 'Aba 3 - 18h15 as 21h00', 'Aba 4 - 22h00 as 02h40']
 
 def leitura():
     usuario   = gt.getuser()
@@ -35,27 +35,24 @@ def leitura():
     partNumber    = []
     indice        = 0
 
-    dlg = wx.TextEntryDialog(None, 'Informe o dia: XX/XX/XXXX','Dialog')  
-    if dlg.ShowModal() == wx.ID_OK:
-        data = str(dlg.GetValue())
-        
-        while True:
-            if dlg.ShowModal() == wx.ID_OK:
-                data = str(dlg.GetValue())
-                if re.match(r'^\d{2}/\d{2}/\d{4}$', data):
-                    try:
-                        datetime.datetime.strptime(data, "%d/%m/%Y")
-                        break  
-                    except ValueError:
-                        wx.MessageBox("Data inválida! Use o formato DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
-                else:
-                    wx.MessageBox("Formato de data inválido! Use DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
+    dlg = wx.TextEntryDialog(None, 'Informe o dia: XX/XX/XXXX', 'Dialog')
+    while True:
+        if dlg.ShowModal() == wx.ID_OK:
+            data = str(dlg.GetValue())
+            if re.match(r'^\d{2}/\d{2}/\d{4}$', data):
+                try:
+                    datetime.datetime.strptime(data, "%d/%m/%Y")
+                    break
+                except ValueError:
+                    wx.MessageBox("Data inválida! Use o formato DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
             else:
-                dlg.Destroy()
-                return
-        dlg.Destroy()
+                wx.MessageBox("Formato de data inválido! Use DD/MM/AAAA.", "Erro", wx.OK | wx.ICON_ERROR)
+        else:
+            dlg.Destroy()
+            return
+    dlg.Destroy()
 
-    dlg = wx.SingleChoiceDialog(None, 'Escolha a Aba desejada', 'Dialog', abas)
+    dlg = wx.SingleChoiceDialog(None, 'Escolha a Aba desejada', 'ABA', abas)
     if dlg.ShowModal() == wx.ID_OK:
         aba = dlg.GetStringSelection()
     else:

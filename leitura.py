@@ -17,7 +17,7 @@ def leitura():
     usuario   = gt.getuser()
     continuar = 'SIM'
     gerada    = f"C:\\Users\\{usuario}\\Desktop\\REPORT_MASTER.xlsx"
-    original  = r'\\files-gdbr01\\GDBR\\ADMINISTRATION\\IT\\Desenvolvimento\\Apontamentos de producao - Programas\\Um-a-Um_Homologado\\modelo\\REPORT_Master__FUNCIONAL.xlsx'
+    original  = r"\\10.72.110.90\datasul\__REPORT_MASTER\__REPORT_MASTER_Funcional.xlsx"
     target    = gerada
 
     shutil.copyfile(original, target)

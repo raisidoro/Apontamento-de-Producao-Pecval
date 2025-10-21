@@ -17,8 +17,18 @@ def leitura():
     usuario   = gt.getuser()
     continuar = 'SIM'
     gerada    = f"C:\\Users\\{usuario}\\Desktop\\REPORT_MASTER.xlsx"
-    original  = r"\\10.72.110.90\datasul\__REPORT_MASTER\__REPORT_MASTER_Funcional.xlsx"
+    original  = r'\\PEC-WS-TOTVSPRD.pecval.com.br\DATASUL\__REPORT_MASTER\REPORT_MASTER_Funcional.xlsx'
     target    = gerada
+
+    print("original:", original)
+    print("target:", target)
+
+    
+    if not os.path.exists(original):
+        print("Arquivo original não encontrado:", original)
+    else:
+        print("Arquivo encontrado, copiando...")
+        shutil.copyfile(original, target)
 
     shutil.copyfile(original, target)
     wb_modelo    = xl.load_workbook(gerada, data_only=False)
